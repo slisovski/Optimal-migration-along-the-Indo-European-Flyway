@@ -1,2 +1,21 @@
-# Optimal-migration-along-the-Indo-European-Flyway
-Simulation code for: The Indo-European Flyway: Opportunities and constraints reflected by Common Rosefinches breeding across Europe. Lisovski et al. 2021 Journal of Biogeography
+## This repository provides the code used to simulate optimal resource and wind migration routes of Common rosefinches along the Indo-European Flyway.
+
+We modelled the general optimal migratory routes with respect to wind and resources from five breeding sites of tracked Common rosefinches (Finland, Sweden, Germany, Czechia, and Bulgaria) to non-breeding sites in Pakistan and India.
+
+### Wind simulations
+
+To investigate routes optimized for wind support across all five rosefinch populations, we followed the approach from Kranstauber et al. (2015). In short, our model calculated the fastest route between five breeding locations and five locations across the non-breeding range, traveling over a grid consisting of 2955 nodes. We used a hexagonal grid such that cells were distributed equally across the area of interest (0.0°W - 100.0°W, 5.0°S - 72.0°N). Travel was allowed along straight connections to the six surrounding cells and the second-order neighbours, creating 12 travel connections about 30° apart. The distance to direct and second-order neighbouring cells was on average 150 km and 300 km, respectively. Wind data was provided by the European Centre for Midrange Weather Forecast (ECMWF; https://www.ecmwf.int/). For the interpolation of wind, we used three layers of the atmospheric pressure with 925, 850 and 700 millibar, corresponding to the median altitude of 779, 1502 and 3130 meters above sea level. These altitudes cover the range where most migration is observed in radar and recent geolocator studies (Kemp et al., 2013; Dhanjal-Adams et al., 2018; Liechti et al., 2018).  The model started at one breeding location and calculated travel times to all surrounding nodes. Travel time to the nodes depends on ground speed (vg), which is a function of cross wind (wc), wind support (ws) and air speed (10 m/s). For each time step of 3 hours, wind conditions from the altitude with the most supporting winds (or least crosswind) were chosen, assuming that birds can change altitude during flight (Liechti et al., 2018). By repeating this process, the algorithm finds the routes with most wind support and identifies the travel time needed to fly from the start to the defined destination. Note, that this approach (as described in Kranstauber et al. 2015) does not include any component of the species stopover ecology and individual birds were assumed to fly non-stop between breeding and non-breeding location.  We calculated the fastest routes (routes with the highest wind support) from all five non-breeding locations to all five breeding locations, and vice-versa, starting every 2nd day during the entire migration seasons between 15 March and 31 May in spring and 15 July and 31 September in autumn from 2012 to 2017. This resulted in 40 routes per population and year. To weigh routes, we used the same approach as Kranstauber et al. (2015), that assumes travel time (t) has a sigmoidal relationship with mortality and calculates an average survival per year for each route using the travel time across all years:
+
+$\sigma_wind= 1 -  frac{t^2}{\lambda - t^2}
+
+Where migration mortality λ is set to the mean travel time across all years squared for every location pair (combination) and starting date separately. This means, on an average migration between two locations half of the individuals would die. It is important to note that this measure of mortality does not reflect ‘true’ mortality but ranks the tracks within the continuum from optimal (Ф = 1) to sub-optimal (Ф = 0). To account for the differences in migration distance between populations, we calculated migration speed (km/day) based on flying duration (days) from the model output divided by the great circle distance (km) between start and end of each route.
+
+
+
+Kranstauber, B., Weinzierl, R., Wikelski, M. & Safi, K. (2015) Global aerial flyways allow efficient travelling. Ecology Letters, 18, 1338–1345.
+
+Kemp, M.U., Shamoun-Baranes, J., Dokter, A.M., van Loon, E. & Bouten, W. (2013) The influence of weather on the flight altitude of nocturnal migrants in mid-latitudes. Ibis, 155, 734–749.
+
+Dhanjal-Adams, K.L., Bauer, S., Emmenegger, T., Hahn, S., Lisovski, S. & Liechti, F. (2018) Spatiotemporal Group Dynamics in a Long-Distance Migratory Bird. Current biology
+
+Liechti, F., Bauer, S., Dhanjal-Adams, K.L., Emmenegger, T., Zehtindjiev, P. & Hahn, S. (2018) Miniaturized multi-sensor loggers provide new insight into year-round flight behaviour of small trans-Sahara avian migrants. Movement Ecology, 6.
